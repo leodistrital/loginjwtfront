@@ -25,7 +25,8 @@ export class AccountService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
+      console.log({environment});
+        return this.http.post<User>(`${environment.apiUrl}/login`, { username, password })
             .pipe(map(user => {
 
                 localStorage.setItem('user', JSON.stringify(user));
@@ -42,19 +43,21 @@ export class AccountService {
     }
 
     register(user: User) {
-        return this.http.post(`${environment.apiUrl}/users/register`, user);
+      const resp  = this.http.post(`${environment.apiUrl}/api/usuarios`, user);
+      console.log({resp});
+      return resp
     }
 
     getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/users`);
+        return this.http.get<User[]>(`${environment.apiUrl}/api/usuarios`);
     }
 
     getById(id: string) {
-        return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+        return this.http.get<User>(`${environment.apiUrl}/api/usuarios/${id}`);
     }
 
     update(id: string, params: any) {
-        return this.http.put(`${environment.apiUrl}/users/${id}`, params)
+        return this.http.put(`${environment.apiUrl}/api/usuarios/${id}`, params)
             .pipe(map(x => {
 
                 if (id == this.userValue?.id) {
@@ -70,7 +73,7 @@ export class AccountService {
     }
 
     delete(id: string) {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`)
+        return this.http.delete(`${environment.apiUrl}/api/usuarios/${id}`)
             .pipe(map(x => {
 
                 if (id == this.userValue?.id) {
